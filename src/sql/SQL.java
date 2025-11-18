@@ -66,12 +66,84 @@ public class SQL {
     	} catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        if (ps == null) {
-        System.out.println("DEBUG: PreparedStatement is NULL");
-        }
-
-    	System.out.println("DEBUG: SQL query was: " + sql);
 
     	sqlQuery(MainProgram.dbConnection, ps);
+    }
+
+    /**
+     *Create PreparedStatement to insert a new custonmer.
+     * 
+     * @param sql query for prepared statement
+     * 
+     * @param customerData array of customer data to insert
+     */
+    public static void ps_AddCustomer(String sql, String [] customerData){
+    	try {
+    		ps = MainProgram.dbConnection.prepareStatement(sql);
+    		for (int i = 1; i <= customerData.length; i++) {
+                if(i == 8) {
+                    ps.setInt(i, Integer.parseInt(customerData[i-1]));
+                    continue;
+                }
+                //tried the autoincrement and it generated a vlaue for customerid but it wasn't correct
+    			ps.setString(i, customerData[i-1]);
+    		}
+
+            ps.executeUpdate();
+            System.out.println("Customer added successfully.");
+            ps.close();
+
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    /**
+     *Create PreparedStatement to delete a custonmer.
+     * 
+     * @param sql query for prepared statement
+     * 
+     * @param customerID ID of customer to delete
+     */
+    public static void ps_RemoveCustomer(String sql, int customerID){
+    	try {
+    		ps = MainProgram.dbConnection.prepareStatement(sql);
+    		ps.setInt(1, customerID);
+
+            ps.executeUpdate();
+            System.out.println("Customer deleted successfully.");
+            ps.close();
+
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     *Create PreparedStatement to edit a custonmer.
+     * 
+     * @param sql query for prepared statement
+     * 
+     * @param customerID ID of customer to delete
+     */
+    public static void ps_EditCustomer(String sql, int customerID, String [] newValues){
+    	try {
+    		ps = MainProgram.dbConnection.prepareStatement(sql);
+    		for (int i = 1; i <= newValues.length; i++) {
+                System.out.print("Setting parameter " + i + " to value " + newValues[i - 1] + "\n");
+                ps.setString(i, newValues[i - 1]);
+            }
+            
+            ps.setInt(newValues.length + 1, customerID);
+
+            System.out.print(sql);
+            ps.executeUpdate();
+            System.out.println("Customer updated successfully.");
+            ps.close();
+
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
