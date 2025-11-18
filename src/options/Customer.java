@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
 
+import sql.SQL;
+
 public class Customer {
     
     /**
@@ -55,6 +57,7 @@ public class Customer {
                     map.put(key, values);
                 }
                 break;
+
             case 2:
                 // This option is for Editing a customers information;
                 System.out.print(
@@ -88,21 +91,28 @@ public class Customer {
                 editValues[holder] = newValue;
                 System.out.println("Value updated");
                 break;
+
             case 3:
                 // This function simply searches the values and returns the tuple related
                 System.out.print(
                         "Please enter the customer ID for which you would like to search: ");
-                String searchKey = readIn.nextLine();
-                // If the key is not contained, alert user, and break
-                if (!map.containsKey(searchKey)) {
-                    System.out.println("No customer has the id: " + searchKey);
-                    break;
-                } else {
-                    System.out.println("The values associated are: "
-                            + Arrays.toString(map.get(searchKey)));
+                int searchKey = readIn.nextInt();
+
+                if(searchKey > 0) {
+			        String sql = "SELECT * FROM Customers WHERE customer_id = ?;"; 
+			        SQL.ps_SearchCustomer(sql, searchKey);
                 }
+                // If the key is not contained, alert user, and break
+                // if (!map.containsKey(searchKey)) {
+                //     System.out.println("No customer has the id: " + searchKey);
+                //     break;
+                // } else {
+                //     System.out.println("The values associated are: "
+                //             + Arrays.toString(map.get(searchKey)));
+                // }
 
                 break;
+
             case 4:
                 // This function simply searches removes the tuple being deleted
                 System.out.print(

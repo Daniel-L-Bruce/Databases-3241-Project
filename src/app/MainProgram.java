@@ -22,10 +22,13 @@ public final class MainProgram {
     private MainProgram() {
         // no code needed here
     }
+
+    public static Connection dbConnection = null;
+
     /*
      * Path to the database file
      */
-    private static final String DATABASE = "ProjectDatabaseUpdated.db";
+    private static final String DATABASE = "Databases-3241-Project/ProjectDatabaseUpdated.db";
 
     /**
      * This function simply prints out the options available to the user.
@@ -100,6 +103,9 @@ public final class MainProgram {
 
         Connection conn = null; // If you create this variable inside the Try block it will be out of scope
         try {
+            System.out.println("Connecting to DB file: " 
+    + new java.io.File(databaseFileName).getAbsolutePath());
+
             conn = DriverManager.getConnection(url);
             if (conn != null) {
             	// Provides some positive assurance the connection and/or creation was successful.
@@ -182,7 +188,7 @@ public final class MainProgram {
      *            the command line arguments; unused here
      */
     public static void main(String[] args) {
-        Connection dbConnection = initializeDB(DATABASE);
+        dbConnection = initializeDB(DATABASE);
 
         Scanner cin = new Scanner(System.in);
         printMainMenu(cin);
