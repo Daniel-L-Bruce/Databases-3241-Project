@@ -1,0 +1,124 @@
+package options;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Warehouse {
+   
+    /**
+     * This variable is used as a key for which string means what in the
+     * warehouse array value of the map.
+     */
+    public static final String[] WAREHOUSE_ORDER_KEY = { "Warehouse Id", "City",
+            "Address", "Phone", "Manager Name", "Storage Capacity", "Drone Capacity" };
+        
+    /**
+     * This function simply prints out the options for the warehouse available
+     * to the user.
+     */
+    public static void printOptionsWarehouse() {
+        System.out.println("1. Add new Warehouse");
+        System.out.println("2. Edit Warehouse");
+        System.out.println("3. Search Warehouse");
+        System.out.println("4. Delete Warehouse");
+        System.out.println("Type anything else to terminate program");
+        System.out
+                .print("Please enter your selection as the number next to the option: ");
+    }
+    
+     /**
+     * This Method processes the users request for the Warehouse category.
+     *
+     * @param option
+     *            This is the option the user selected
+     * @param readIn
+     *            This is an input stream
+     * @param map
+     *            This is the map with all the user data for Warehouse
+     */
+    public static void processWarehouseRequest(int option, Scanner readIn,
+            Map<String, String[]> map) {
+        switch (option) {
+            case 1:
+                // This is for adding a customer
+                // Create a values string for the values to be entered
+                String[] values = new String[WAREHOUSE_ORDER_KEY.length];
+                for (int i = 0; i < values.length; i++) {
+                    System.out.print(
+                            "Please enter the value for " + WAREHOUSE_ORDER_KEY[i] + ":");
+                    values[i] = readIn.nextLine();
+                }
+                String key = values[0];
+                if (!map.containsKey(key)) {
+                    map.put(key, values);
+                }
+                break;
+            case 2:
+                // This option is for Editing a customers information;
+                System.out.print(
+                        "Please enter the Warehouse ID for which you would like to edit: ");
+                String editKey = readIn.nextLine();
+                // If the key is not contained, alert user, and break
+                if (!map.containsKey(editKey)) {
+                    System.out.println("No Warehouse has the id: " + editKey);
+                    break;
+                }
+                System.out.println(
+                        "Avaiable fields: " + Arrays.toString(WAREHOUSE_ORDER_KEY));
+                System.out.print(
+                        "Please enter the field for which you would like to edit: ");
+                String editField = readIn.nextLine();
+                // Find what
+                int holder = 0;
+                while (holder < WAREHOUSE_ORDER_KEY.length
+                        && !editField.equals(WAREHOUSE_ORDER_KEY[holder])) {
+                    holder++;
+                }
+                // If holder == the length of the example array, the field entered
+                // is not one of the option, alert the user and exit
+                if (holder == WAREHOUSE_ORDER_KEY.length) {
+                    System.out.println("The field entered does not exist: " + editField);
+                    break;
+                }
+                System.out.print("Please enter the new value: ");
+                String newValue = readIn.nextLine();
+                String[] editValues = map.get(editKey);
+                editValues[holder] = newValue;
+                System.out.println("Value updated");
+                break;
+            case 3:
+                // This function simply searches the values and returns the tuple related
+                System.out.print(
+                        "Please enter the Warehouse ID for which you would like to search: ");
+                String searchKey = readIn.nextLine();
+                // If the key is not contained, alert user, and break
+                if (!map.containsKey(searchKey)) {
+                    System.out.println("No Warehouse has the id: " + searchKey);
+                    break;
+                } else {
+                    System.out.println("The values associated are: "
+                            + Arrays.toString(map.get(searchKey)));
+                }
+
+                break;
+            case 4:
+                // This function simply removes the tuple being deleted
+                System.out.print(
+                        "Please enter the Warehouse ID for which you would like to delete: ");
+                String removeKey = readIn.nextLine();
+                // If the key is not contained, alert user, and break
+                if (!map.containsKey(removeKey)) {
+                    System.out.println("No Warehouse has the id: " + removeKey);
+                    break;
+                } else {
+                    map.remove(removeKey);
+                }
+
+                break;
+            default:
+                // Do not do anything
+        }
+    }
+
+}

@@ -1,0 +1,14 @@
+{
+    
+    "java.project.outputPath": "bin",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Run MainProgram",
+            "request": "launch",
+            "mainClass": "app.MainProgram",
+            "projectName": "Databases-3241-Project"
+        }
+    ]
+}
+
